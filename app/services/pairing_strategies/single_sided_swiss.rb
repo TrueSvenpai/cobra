@@ -31,17 +31,19 @@ module PairingStrategies
       # Write the results to the database.
       ActiveRecord::Base.transaction do
         @plain_pairings.each do |pp|
-          p = Pairing.new(round:, player1_id: pp.player1&.id, player2_id: pp.player2&.id, table_number: pp.table_number)
+          player1 = pp.player1_side == 'corp' ? pp.player1 : pp.player2
+          player2 = pp.player1_side == 'corp' ? pp.player2 : pp.player1
+          p = Pairing.new(round:, player1_id: player1&.id, player2_id: player2&.id, table_number: pp.table_number)
           # Assign scores for byes.
           if pp.bye?
-            if pp.player1.nil?
+            if player1.nil?
               p.score2 = @bye_winner_score
             else
               p.score1 = @bye_winner_score
             end
           else
-            # Assign sides for non-bye pairings.
-            p.side = pp.player1_side == 'corp' ? CORP : RUNNER
+            # PLAYER 1 IS !ALWAYS! CORP
+            p.side = CORP
           end
 
           p.save
