@@ -68,7 +68,13 @@ export interface Pairing {
   intentional_draw: boolean;
   two_for_one: boolean;
   self_report: SelfReport | null;
+  ui_metadata: UiMetadata
 }
+
+export interface UiMetadata {
+  row_highlighted: boolean;
+}
+
 
 export interface SelfReport {
   report_player_id: number;
