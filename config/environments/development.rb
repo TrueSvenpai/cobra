@@ -80,6 +80,7 @@ Rails.application.configure do
   config.after_initialize do
     Flipper.enable :allow_self_reporting
     Flipper.enable :demo_tournaments
+    Flipper.enable :enable_profiles
   rescue StandardError => e
     Rails.logger.warn "Failed setting Flipper features: #{e.class}"
   end
